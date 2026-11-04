@@ -50,9 +50,14 @@ bin/magento cache:flush
    `verifactu.document.send`; or run `bin/magento queue:consumers:start verifactu.document.send`
    under a supervisor.
 3. Place a test order, invoice it, and open **Sales › Operations › Verifactu Documents**: the
-   document should reach `issued` with a Quaderno number and a verification link.
+   document should reach `issued` with an invoice number and a verification link.
 4. Go live only after the sandbox works: switch the environment and the API credentials to
    your live Quaderno account.
+
+**Customer emails.** Magento sends its own invoice and credit memo emails with the Magento number,
+before Quaderno issues the Verifactu invoice. Disable them (Stores › Configuration › Sales › Sales
+Emails › Invoice / Credit Memo) or change their templates so they do not look like an invoice.
+The legal invoice is Quaderno's: PDF and AEAT link in the customer's order view.
 
 The full list of shop settings (checkout NIF field, VIES groups for EU B2B, customer emails,
 Quaderno settings) is in [module/docs/install-checklist.md](module/docs/install-checklist.md). Module
