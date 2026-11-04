@@ -1,0 +1,86 @@
+# Module gates (tools/ci/module-gates.sh: Marketplace phpcs, phpcs + PHPCompatibility, PHPStan 6,
+# PHPMD, PHPCPD, no TODO, composer validate, unit tests) against a Magento project per supported
+# version. Magento packages come from the Mage-OS mirror of Magento Open Source
+# (https://mirror.mage-os.org/), so no repo.magento.com keys are needed. Static tools are pinned
+# to the versions of Magento 2.4.7-p10's dev tools; PHPUnit is the one of each release.
+name: module
+
+on:
+  push:
+    branches: [main]
+    paths: ['module/**', 'tools/ci/**', '.github/workflows/module.yml']
+  pull_request:
+    paths: ['module/**', 'tools/ci/**', '.github/workflows/module.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  gates:
+    name: PHP ${{ matrix.php }} / Magento ${{ matrix.magento }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # 2.4.7 allows PHP 8.1, and the Marketplace installation test runs every allowed version
+          - { php: '8.1', magento: '2.4.7-p10' }
+          - { php: '8.2', magento: '2.4.7-p10' }
+          - { php: '8.3', magento: '2.4.7-p10' }
+          - { php: '8.4', magento: '2.4.8-p5' }
+    env:
+      COMPOSER_MEMORY_LIMIT: '-1'
+      COMPOSER_NO_INTERACTION: '1'
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          tools: composer:v2
+          coverage: none
+          extensions: bcmath, ctype, curl, dom, fileinfo, gd, iconv, intl, mbstring, openssl, pdo_mysql, simplexml, soap, sockets, sodium, xsl, zip, ftp
+
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/composer
+          key: composer-${{ matrix.php }}-${{ matrix.magento }}-${{ hashFiles('module/composer.json') }}
+          restore-keys: composer-${{ matrix.php }}-${{ matrix.magento }}-
+
+      - name: Magento project ${{ matrix.magento }} with the module
+        run: |
+          composer create-project --no-install --repository-url=https://mirror.mage-os.org/ \
+            magento/project-community-edition="${{ matrix.magento }}" magento
+          cd magento
+          composer config --no-plugins --json allow-plugins true
+          composer config audit.block-insecure false
+          composer config repositories.verifactu \
+            '{"type": "path", "url": "${{ github.workspace }}/module", "options": {"symlink": false}}'
+          composer require --no-update normaro/module-verifactu:^0.1
+          composer require --dev --no-update phpmd/phpmd:2.15.0 pdepend/pdepend:^2.16 \
+            phpstan/phpstan:^1.12 bitexpert/phpstan-magento:^0.32
+          composer update --no-progress --ignore-platform-req='ext-*'
+          # the runner image ships /var/www/html (apache): replace it, do not link inside it
+          sudo rm -rf /var/www/html
+          sudo mkdir -p /var/www
+          sudo ln -s "$PWD" /var/www/html
+          test -x /var/www/html/vendor/bin/phpcs
+
+      - name: PHPCPD 6.0.3 (phar; as a composer package it conflicts with PHPUnit 10 on 2.4.8)
+        run: |
+          curl -sSfL -o "$RUNNER_TEMP/phpcpd" https://phar.phpunit.de/phpcpd-6.0.3.phar
+          chmod +x "$RUNNER_TEMP/phpcpd"
+          echo "PHPCPD=$RUNNER_TEMP/phpcpd" >> "$GITHUB_ENV"
+
+      - name: Tool versions
+        run: |
+          V=/var/www/html/vendor/bin
+          php -v | head -1
+          $V/phpcs --version; $V/phpstan --version; $V/phpmd --version; $PHPCPD --version | head -1; $V/phpunit --version
+          composer show -d /var/www/html magento/framework | grep -E '^versions'
+
+      - name: Gates
+        working-directory: module
+        run: bash ../tools/ci/module-gates.sh /var/www/html/vendor/bin
