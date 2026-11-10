@@ -57,7 +57,8 @@ bin/magento cache:flush
 **Customer emails.** Magento sends its own invoice and credit memo emails with the Magento number,
 before Quaderno issues the Verifactu invoice. Disable them (Stores › Configuration › Sales › Sales
 Emails › Invoice / Credit Memo) or change their templates so they do not look like an invoice.
-The legal invoice is Quaderno's: PDF and AEAT link in the customer's order view.
+The legal invoice is Quaderno's: PDF and AEAT link in the customer's order view, and by email
+when "Autosend all automatic invoices and credit notes" is on in Quaderno (Document preferences).
 
 The full list of shop settings (checkout NIF field, VIES groups for EU B2B, customer emails,
 Quaderno settings) is in [module/docs/install-checklist.md](module/docs/install-checklist.md). Module
