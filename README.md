@@ -41,7 +41,7 @@ bin/magento setup:di:compile
 bin/magento cache:flush
 ```
 
-1. **Stores › Configuration › Sales › Verifactu**: environment Sandbox, the API URL and private
+1. **Stores › Configuration › Sales › Verifactu**: environment Sandbox (test), the API URL and private
    API key of your Quaderno sandbox account, the simplified-invoice threshold (the same value as
    in Quaderno), and the mapping of every product tax class and the shipping tax class to an
    IVA rate.
