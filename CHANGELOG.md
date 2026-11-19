@@ -3,6 +3,16 @@
 All notable changes to this project. Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/);
 versions follow [Semantic Versioning](https://semver.org/).
 
+## [0.1.1] - 2026-11-19
+
+Documentation only; no code changes.
+
+### Changed
+
+- README: compatibility stated as Magento Open Source 2.4.7 and 2.4.8 (Adobe Commerce not
+  tested); "pre-release" label and the paragraph about paid services removed.
+- `composer.json` version 0.1.1.
+
 ## [0.1.0] - 2026-11-11
 
 First release. Tested against the Quaderno sandbox on Magento 2.4.7 (PHP 8.3), including

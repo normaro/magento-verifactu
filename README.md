@@ -11,7 +11,7 @@ and the QR code come back into Magento.
 The shop does not become an invoicing-software (SIF) producer: Quaderno is the certified
 system and is responsible for the invoice records and their delivery to the AEAT.
 
-**Status: v0.1, pre-release.** Tested against the Quaderno sandbox; not yet used in production.
+**Status:** tested against the Quaderno sandbox; not yet used in production.
 
 ## Who it is for
 
@@ -21,7 +21,7 @@ system and is responsible for the invoice records and their delivery to the AEAT
 
 ## Requirements
 
-- Magento Open Source or Adobe Commerce **2.4.7 or 2.4.8**, with the PHP version that release
+- Magento Open Source **2.4.7 or 2.4.8** (Adobe Commerce: not tested), with the PHP version that release
   supports (CI runs PHP 8.1–8.3 on 2.4.7 and 8.4 on 2.4.8).
 - A **paid Quaderno account** with the Verifactu integration activated. Activation cannot be
   undone: try everything in a Quaderno sandbox account first.
@@ -118,8 +118,6 @@ Not legal advice.
 - Bugs and questions: [GitHub issues](https://github.com/normaro/magento-verifactu/issues).
   Never post customer data, NIFs or API keys.
 - Contributions: see [CONTRIBUTING.md](CONTRIBUTING.md). Changes: [CHANGELOG.md](CHANGELOG.md).
-- Installation, IVA mapping, a check of your first invoices, and a support subscription for
-  Magento releases and AEAT changes: **[normaro.es](https://normaro.es)**.
 
 ## License
 
