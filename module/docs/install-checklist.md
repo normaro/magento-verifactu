@@ -84,6 +84,12 @@ Decisions marked *(adviser)* are tax decisions: agree them with your asesor / ge
       a full credit memo; each reaches `issued` with a verification link.
 - [ ] Switch environment, API URL and key to the live account; place one real low-value order
       and check the document in Quaderno and its AEAT state.
+- [ ] Activate Verifactu in Quaderno **before** the first live invoice: documents dated before the
+      activation are not sent to the AEAT, and Quaderno reports no error for them.
+- [ ] **First live B2C document** (Spanish consumer, no NIF, below the threshold): check in Quaderno
+      that it is a **receipt** (simplified invoice, receipt series) with AEAT state `Correcto`, not an
+      invoice. With *Pass the customer's email for simplified invoices* = Yes, Quaderno issues an
+      invoice without the customer's NIF instead, which the AEAT accepts with error 2006.
 
 ## Not covered by v0.1
 

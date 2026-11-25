@@ -18,6 +18,7 @@ class CustomerData
      * Value object; all fields are constructor arguments.
      *
      * @SuppressWarnings(PHPMD.ExcessiveParameterList)
+     * @SuppressWarnings(PHPMD.BooleanArgumentFlag) value object: the flag is data, not a code path
      *
      * @param string $kind person or company
      * @param string $firstName person first name, or the company name
@@ -31,6 +32,7 @@ class CustomerData
      * @param string|null $region
      * @param string|null $email
      * @param string|null $contactId existing provider contact
+     * @param bool $detached sent without email and stored contact (simplified invoice, see detached())
      */
     public function __construct(
         public readonly string $kind,
@@ -44,7 +46,36 @@ class CustomerData
         public readonly ?string $postcode = null,
         public readonly ?string $region = null,
         public readonly ?string $email = null,
-        public readonly ?string $contactId = null
+        public readonly ?string $contactId = null,
+        public readonly bool $detached = false
     ) {
+    }
+
+    /**
+     * The same customer without email and without the stored provider contact.
+     *
+     * Quaderno issues a full invoice instead of a simplified one (receipt) when the contact has an
+     * email (Quaderno sandbox, 2026-11-25); a detached customer is also not remembered as the
+     * registered customer's contact.
+     *
+     * @return self
+     */
+    public function detached(): self
+    {
+        return new self(
+            $this->kind,
+            $this->firstName,
+            $this->lastName,
+            $this->country,
+            $this->taxId,
+            $this->street1,
+            $this->street2,
+            $this->city,
+            $this->postcode,
+            $this->region,
+            null,
+            null,
+            true
+        );
     }
 }

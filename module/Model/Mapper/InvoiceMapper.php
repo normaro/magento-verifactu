@@ -18,11 +18,13 @@ class InvoiceMapper
      * @param LineBuilder $lineBuilder
      * @param CustomerBuilder $customerBuilder
      * @param PaymentMethodMapper $paymentMethodMapper
+     * @param SimplifiedCustomerPolicy $simplifiedCustomerPolicy
      */
     public function __construct(
         private readonly LineBuilder $lineBuilder,
         private readonly CustomerBuilder $customerBuilder,
-        private readonly PaymentMethodMapper $paymentMethodMapper
+        private readonly PaymentMethodMapper $paymentMethodMapper,
+        private readonly SimplifiedCustomerPolicy $simplifiedCustomerPolicy
     ) {
     }
 
@@ -37,14 +39,16 @@ class InvoiceMapper
     {
         $order = $invoice->getOrder();
         $payment = $order->getPayment();
+        $grandTotal = round((float)$invoice->getGrandTotal(), 2);
+        $storeId = (int)$order->getStoreId();
         return new DocumentData(
             DocumentData::TRANSACTION_SALE,
             (string)$invoice->getIncrementId(),
             (string)$order->getOrderCurrencyCode(),
-            $this->customerBuilder->build($order),
+            $this->simplifiedCustomerPolicy->apply($this->customerBuilder->build($order), $grandTotal, $storeId),
             $this->lineBuilder->build($invoice, $order),
-            round((float)$invoice->getGrandTotal(), 2),
-            (int)$order->getStoreId(),
+            $grandTotal,
+            $storeId,
             $this->paymentMethodMapper->map($payment ? (string)$payment->getMethod() : ''),
             (string)$order->getIncrementId()
         );

@@ -3,6 +3,19 @@
 All notable changes to this project. Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/);
 versions follow [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Changed
+
+- Spanish sales without NIF below the simplified-invoice threshold are sent to Quaderno without the
+  customer's email and without the stored Quaderno contact, so Quaderno issues a receipt (simplified
+  invoice). With an email on the contact Quaderno issued an invoice without the customer's NIF,
+  which the AEAT accepted with error 2006 and without a verification code (Quaderno sandbox,
+  2026-11-25). New setting *Pass the customer's email to Quaderno for simplified invoices*
+  (default No). Such a sale is not remembered as the registered customer's Quaderno contact.
+- Install checklist: activate Verifactu before the first live invoice; check the first live B2C
+  document is a receipt.
+
 ## [0.1.2] - 2026-11-25
 
 Magento 2.4.9 / PHP 8.5 support. No change in behaviour.

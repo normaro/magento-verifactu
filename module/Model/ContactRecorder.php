@@ -38,7 +38,7 @@ class ContactRecorder
     {
         $customerId = (int)$order->getCustomerId();
         if ($customerId <= 0 || $order->getCustomerIsGuest() || $result->contactId === null
-            || $data->customer->contactId !== null
+            || $data->customer->contactId !== null || $data->customer->detached
         ) {
             return;
         }

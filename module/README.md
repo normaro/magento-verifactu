@@ -56,6 +56,7 @@ sends and fetches the AEAT state. Without a consumer every document stays `queue
 | Private API key | stored encrypted |
 | Send invoices | **On capture** (default: only paid invoices) or **On invoice** (every invoice) |
 | Simplificada threshold, EUR | must equal the receipts threshold in Quaderno; Spanish orders without NIF at or above it are blocked |
+| Pass the customer's email for simplified invoices | **No** (default): Spanish orders without NIF below the threshold go to Quaderno without the customer's email and stored contact, so Quaderno issues a receipt; with the email it issues an invoice without NIF, which the AEAT accepts with error 2006. With No, Quaderno does not email these receipts; the PDF and AEAT link are in the customer's order view |
 | Debug logging | writes every Quaderno request and response to `var/log/verifactu.log` |
 | IVA mapping | every product tax class used in orders, and the shipping tax class, mapped to a Quaderno tax code (standard / reduced / exempt) |
 

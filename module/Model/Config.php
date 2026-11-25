@@ -21,6 +21,7 @@ class Config
     public const XML_API_KEY = 'verifactu/general/api_key';
     public const XML_TRIGGER = 'verifactu/general/trigger';
     public const XML_THRESHOLD = 'verifactu/general/threshold';
+    public const XML_SIMPLIFIED_EMAIL = 'verifactu/general/simplified_email';
     public const XML_DEBUG = 'verifactu/general/debug';
     public const XML_TAX_MAPPING = 'verifactu/tax/mapping';
     public const XML_SHIPPING_TAX_CLASS = 'tax/classes/shipping_tax_class';
@@ -125,6 +126,17 @@ class Config
     {
         $value = $this->scopeConfig->getValue(self::XML_THRESHOLD, ScopeInterface::SCOPE_STORE, $storeId);
         return $value === null || $value === '' ? 3000.0 : (float)$value;
+    }
+
+    /**
+     * Whether the customer's email goes to the provider for a simplified invoice (default: no).
+     *
+     * @param int|null $storeId
+     * @return bool
+     */
+    public function isSimplifiedEmailPassed(?int $storeId = null): bool
+    {
+        return $this->scopeConfig->isSetFlag(self::XML_SIMPLIFIED_EMAIL, ScopeInterface::SCOPE_STORE, $storeId);
     }
 
     /**

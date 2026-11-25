@@ -52,6 +52,12 @@
                     <comment>Use the same amount as the receipt limit in Quaderno. Spanish orders without a NIF from this amount are held until a NIF is added.</comment>
                     <validate>required-entry validate-number validate-greater-than-zero</validate>
                 </field>
+                <field id="simplified_email" translate="label comment" type="select" sortOrder="65"
+                       showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Pass the customer&apos;s email to Quaderno for simplified invoices</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>No (recommended): for Spanish orders without a NIF below the limit, the customer&apos;s email and stored Quaderno contact are not sent, so Quaderno issues a simplified invoice. With the email, Quaderno issues a full invoice without the customer&apos;s NIF, which the AEAT accepts with error 2006. With No, Quaderno does not email these simplified invoices to the customer; the PDF and the AEAT link stay in the customer&apos;s order view.</comment>
+                </field>
                 <field id="debug" translate="label comment" type="select" sortOrder="70" showInDefault="1"
                        showInWebsite="1" showInStore="1">
                     <label>Debug logging</label>
