@@ -1,0 +1,28 @@
+<?php
+/**
+ * Copyright (c) Iurii Tkachenko. Licensed under OSL-3.0, see LICENSE.
+ *
+ * @var \Normaro\Verifactu\Block\Email\Document $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+$row = $block->getRow();
+if ($row === null) {
+    return;
+}
+$pdf = (string)$row->getData('pdf_url');
+$verify = (string)$row->getData('verification_permalink');
+?>
+<table class="verifactu-email" style="width:100%;margin:15px 0;">
+    <tr>
+        <td>
+            <strong><?= $escaper->escapeHtml($block->getTypeLabel($row)) ?>
+                <?= $escaper->escapeHtml((string)$row->getData('number')) ?></strong>
+            <?php if ($pdf !== ''): ?>
+                · <a href="<?= $escaper->escapeUrl($pdf) ?>"><?= $escaper->escapeHtml(__('Download PDF')) ?></a>
+            <?php endif; ?>
+            <?php if ($verify !== ''): ?>
+                · <a href="<?= $escaper->escapeUrl($verify) ?>"><?= $escaper->escapeHtml(__('Verify at AEAT')) ?></a>
+            <?php endif; ?>
+        </td>
+    </tr>
+</table>

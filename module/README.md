@@ -68,11 +68,18 @@ Recommended Magento setup:
   Melilla (postcodes 35, 38, 51, 52);
 - EU B2B: VIES validation on, and the "Group for Invalid VAT ID" and "Validation Error Group"
   must not be the 0 % group (Quaderno does not check VAT numbers);
-- Magento's own invoice and credit memo emails: disable them (Sales Emails › Invoice / Credit
-  Memo) or change their templates; they show the Magento number, not the Verifactu invoice, and
-  are sent before Quaderno issues it (the config section shows the same warning);
-- to email Quaderno's invoice to the customer, switch on "Autosend all automatic invoices and
-  credit notes" in Quaderno (Settings › Document preferences › Billing); it is off by default;
+- customer emails (**Verifactu › Customer emails**):
+  - **After issue** (recommended): Magento's invoice / credit memo email waits until Quaderno has
+    issued the Verifactu invoice, then goes out with its number, PDF and AEAT link; keep Sales
+    Emails › Invoice / Credit Memo enabled. A blocked document keeps its email waiting until it is
+    resent; "Send Email" on the Magento page always sends at once;
+  - **Quaderno**: Magento sends no invoice / credit memo emails for these documents; switch on
+    "Autosend all automatic invoices and credit notes" in Quaderno (Settings › Document preferences
+    › Billing; off by default). Simplified invoices sent without the customer's email are emailed
+    by Magento after issue (Quaderno has no address for them);
+  - **As is** (default after an upgrade): Magento sends its own email when the document is saved,
+    with the Magento number and before Quaderno issues anything: disable those emails or change
+    their templates;
 - do not filter mail from `noreply@quadernoapp.com`: its "Review pending documents" email is the
   only signal about a draft outside the API.
 

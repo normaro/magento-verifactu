@@ -22,6 +22,7 @@ class Config
     public const XML_TRIGGER = 'verifactu/general/trigger';
     public const XML_THRESHOLD = 'verifactu/general/threshold';
     public const XML_SIMPLIFIED_EMAIL = 'verifactu/general/simplified_email';
+    public const XML_CUSTOMER_EMAIL_MODE = 'verifactu/customer_email/mode';
     public const XML_DEBUG = 'verifactu/general/debug';
     public const XML_TAX_MAPPING = 'verifactu/tax/mapping';
     public const XML_SHIPPING_TAX_CLASS = 'tax/classes/shipping_tax_class';
@@ -30,6 +31,11 @@ class Config
     public const ENV_LIVE = 'live';
     public const TRIGGER_CAPTURE = 'capture';
     public const TRIGGER_INVOICE = 'invoice';
+
+    /** Who emails the customer: Magento at once, Magento after issue, or Quaderno (Autosend) */
+    public const EMAIL_AS_IS = 'as_is';
+    public const EMAIL_AFTER_ISSUE = 'after_issue';
+    public const EMAIL_QUADERNO = 'quaderno';
 
     /** Hosts of Quaderno sandbox accounts end with this suffix */
     public const SANDBOX_HOST_SUFFIX = '.sandbox-quadernoapp.com';
@@ -137,6 +143,22 @@ class Config
     public function isSimplifiedEmailPassed(?int $storeId = null): bool
     {
         return $this->scopeConfig->isSetFlag(self::XML_SIMPLIFIED_EMAIL, ScopeInterface::SCOPE_STORE, $storeId);
+    }
+
+    /**
+     * Customer email mode: as_is (default), after_issue or quaderno.
+     *
+     * @param int|null $storeId
+     * @return string
+     */
+    public function getCustomerEmailMode(?int $storeId = null): string
+    {
+        $value = (string)$this->scopeConfig->getValue(
+            self::XML_CUSTOMER_EMAIL_MODE,
+            ScopeInterface::SCOPE_STORE,
+            $storeId
+        );
+        return in_array($value, [self::EMAIL_AFTER_ISSUE, self::EMAIL_QUADERNO], true) ? $value : self::EMAIL_AS_IS;
     }
 
     /**

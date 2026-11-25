@@ -10,6 +10,7 @@ use Magento\Backend\Block\Template;
 use Magento\Backend\Block\Template\Context;
 use Normaro\Verifactu\Model\Document;
 use Normaro\Verifactu\Model\DocumentRepository;
+use Normaro\Verifactu\Model\ResourceModel\CustomerEmail;
 
 /**
  * "Verifactu" block on the admin invoice / credit memo page.
@@ -31,11 +32,13 @@ class Info extends Template
     /**
      * @param Context $context
      * @param DocumentRepository $documentRepository
+     * @param CustomerEmail $customerEmail
      * @param mixed[] $data
      */
     public function __construct(
         Context $context,
         private readonly DocumentRepository $documentRepository,
+        private readonly CustomerEmail $customerEmail,
         array $data = []
     ) {
         parent::__construct($context, $data);
@@ -56,6 +59,22 @@ class Info extends Template
                 : null;
         }
         return $this->document;
+    }
+
+    /**
+     * State of the customer email held for the Verifactu invoice, or '' when none was held.
+     *
+     * @return string
+     */
+    public function getCustomerEmailLabel(): string
+    {
+        $id = (int)$this->getRequest()->getParam((string)$this->getData('id_param'));
+        $status = $id > 0 ? $this->customerEmail->getStatus((string)$this->getData('source_type'), $id) : null;
+        if ($status === null) {
+            return '';
+        }
+        $label = CustomerEmail::STATUS_LABELS[$status] ?? $status;
+        return (string)__($label);
     }
 
     /**

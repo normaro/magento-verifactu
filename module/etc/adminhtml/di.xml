@@ -11,4 +11,11 @@
         <plugin name="normaro_verifactu_document_block_position"
                 type="Normaro\Verifactu\Plugin\AdminDocumentBlockPosition"/>
     </type>
+    <!-- "Send Email" on the invoice / credit memo page always sends, issued or not -->
+    <type name="Magento\Sales\Controller\Adminhtml\Invoice\AbstractInvoice\Email">
+        <plugin name="normaro_verifactu_manual_email" type="Normaro\Verifactu\Plugin\ManualSendEmail"/>
+    </type>
+    <type name="Magento\Sales\Controller\Adminhtml\Creditmemo\AbstractCreditmemo\Email">
+        <plugin name="normaro_verifactu_manual_email" type="Normaro\Verifactu\Plugin\ManualSendEmail"/>
+    </type>
 </config>

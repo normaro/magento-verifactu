@@ -49,18 +49,23 @@ Decisions marked *(adviser)* are tax decisions: agree them with your asesor / ge
       "Group for Valid VAT ID - Intra-Union" may be the 0 % B2B group; "Group for Invalid VAT
       ID" and "Validation Error Group" must **not** be. Quaderno does not check VAT numbers and
       takes the 0 % as sent.
-- [ ] Magento's own invoice and credit memo emails to customers are disabled (Stores ›
-      Configuration › Sales › Sales Emails › Invoice / Credit Memo › Enabled = No), or their
-      templates no longer look like an invoice. They carry the Magento number, not the Verifactu
-      one, and are sent before Quaderno issues the invoice; an invoice has one original (RF
-      art. 14.1). The same applies to "Print Invoice" in the customer account and the admin.
-      The legal invoice is Quaderno's (PDF and AEAT link in the customer's order view).
-- [ ] Decide how the customer receives Quaderno's invoice. Quaderno emails documents created
-      through the API only when **Settings › Document preferences › Billing › "Autosend all
-      automatic invoices and credit notes"** is on (off by default); "Attach all invoices and
-      credit notes as PDF in your emails" adds the PDF. With it off, the customer finds the PDF
-      and the AEAT link in the order view only. Check the email template and language in
-      Settings › Email templates.
+- [ ] **Customer emails** (Stores › Configuration › Sales › Verifactu › Customer emails), one of:
+      - **After issue** (recommended): Magento's invoice / credit memo email waits for the Verifactu
+        invoice and carries its number, PDF and AEAT link. Sales Emails › Invoice / Credit Memo ›
+        Enabled = **Yes** (if you switched them off for 0.1, switch them back on). Autosend in
+        Quaderno off, or the customer gets two emails.
+      - **Quaderno**: Magento sends no invoice / credit memo emails for these documents. Quaderno
+        emails documents created through the API only when **Settings › Document preferences ›
+        Billing › "Autosend all automatic invoices and credit notes"** is on (off by default);
+        "Attach all invoices and credit notes as PDF in your emails" adds the PDF. Check the email
+        template and language in Settings › Email templates. Simplified invoices sent without the
+        customer's email are still emailed by Magento after issue.
+      - **As is**: Magento's own emails carry the Magento number, not the Verifactu one, and are
+        sent before Quaderno issues the invoice; an invoice has one original (RF art. 14.1).
+        Disable them (Sales Emails › Invoice / Credit Memo › Enabled = No) or change their
+        templates so they do not look like an invoice.
+      In every mode "Print Invoice" in the customer account and the admin is Magento's document,
+      not the legal invoice; the legal invoice is Quaderno's (PDF and AEAT link in the order view).
 - [ ] Gift cards: not supported in v0.1. Orders paid partly with a gift card are blocked
       (totals do not add up), and the module cannot tell a multi-purpose card sold as a
       product from an ordinary product *(adviser before selling gift cards)*.

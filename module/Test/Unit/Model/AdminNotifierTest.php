@@ -37,6 +37,8 @@ class AdminNotifierTest extends TestCase
             'https://shop/admin/verifactu/document/open/id/17/'
         );
 
-        (new AdminNotifier($notifier, $url))->notify($document);
+        $config = $this->createStub(\Normaro\Verifactu\Model\Config::class);
+        $config->method('getCustomerEmailMode')->willReturn('as_is');
+        (new AdminNotifier($notifier, $url, $config))->notify($document);
     }
 }

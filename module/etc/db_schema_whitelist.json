@@ -47,5 +47,24 @@
             "PRIMARY": true,
             "VERIFACTU_CUSTOMER_CONTACT_CUSTOMER_ID_CUSTOMER_ENTITY_ENTITY_ID": true
         }
+    },
+    "verifactu_customer_email": {
+        "column": {
+            "entity_id": true,
+            "source_type": true,
+            "source_id": true,
+            "store_id": true,
+            "status": true,
+            "message": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "index": {
+            "VERIFACTU_CUSTOMER_EMAIL_STATUS": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "VERIFACTU_CUSTOMER_EMAIL_SOURCE_TYPE_SOURCE_ID": true
+        }
     }
 }

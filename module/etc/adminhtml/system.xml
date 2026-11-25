@@ -65,6 +65,16 @@
                     <comment>Yes: log every exchange with Quaderno in var/log/verifactu.log, for support. No: errors and status changes only. The API key and tax IDs are never written.</comment>
                 </field>
             </group>
+            <group id="customer_email" translate="label" type="text" sortOrder="15" showInDefault="1"
+                   showInWebsite="1" showInStore="1">
+                <label>Customer emails</label>
+                <field id="mode" translate="label comment" type="select" sortOrder="10" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Magento invoice and credit memo emails</label>
+                    <source_model>Normaro\Verifactu\Model\Config\Source\CustomerEmailMode</source_model>
+                    <comment>After issue (recommended): the email waits until Quaderno has issued the Verifactu invoice, then goes out with its number, PDF and AEAT link; Sales Emails &gt; Invoice / Credit Memo must stay enabled. Blocked documents keep the email waiting until they are resent. "Send Email" on the Magento page always sends at once.</comment>
+                </field>
+            </group>
             <group id="tax" translate="label" type="text" sortOrder="20" showInDefault="1"
                    showInWebsite="1" showInStore="1">
                 <label>IVA mapping</label>

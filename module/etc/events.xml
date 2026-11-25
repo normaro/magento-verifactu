@@ -13,4 +13,10 @@
         <observer name="normaro_verifactu_creditmemo"
                   instance="Normaro\Verifactu\Observer\CreditmemoSaveCommitAfter"/>
     </event>
+    <event name="email_invoice_set_template_vars_before">
+        <observer name="normaro_verifactu_email_vars" instance="Normaro\Verifactu\Observer\EmailTemplateVars"/>
+    </event>
+    <event name="email_creditmemo_set_template_vars_before">
+        <observer name="normaro_verifactu_email_vars" instance="Normaro\Verifactu\Observer\EmailTemplateVars"/>
+    </event>
 </config>

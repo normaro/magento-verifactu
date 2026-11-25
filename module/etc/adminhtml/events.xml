@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright (c) Iurii Tkachenko. Licensed under OSL-3.0, see LICENSE.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <!-- "After issue" / "Quaderno" need Sales Emails > Invoice / Credit Memo enabled -->
+    <event name="admin_system_config_changed_section_verifactu">
+        <observer name="normaro_verifactu_check_sales_emails" instance="Normaro\Verifactu\Observer\CheckSalesEmails"/>
+    </event>
+</config>

@@ -10,6 +10,7 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Sales\Model\Order;
 use Normaro\Verifactu\Api\ProviderInterface;
+use Normaro\Verifactu\Model\CustomerEmail\Dispatcher;
 use Normaro\Verifactu\Model\Log\Logger;
 use Normaro\Verifactu\Model\Precheck\PrecheckResult;
 use Normaro\Verifactu\Model\Provider\DocumentData;
@@ -42,6 +43,7 @@ class Sender
      * @param AdminNotifier $notifier
      * @param DateTime $dateTime
      * @param Logger $logger
+     * @param Dispatcher $emailDispatcher
      */
     public function __construct(
         private readonly DocumentRepository $documentRepository,
@@ -51,7 +53,8 @@ class Sender
         private readonly ContactRecorder $contactRecorder,
         private readonly AdminNotifier $notifier,
         private readonly DateTime $dateTime,
-        private readonly Logger $logger
+        private readonly Logger $logger,
+        private readonly Dispatcher $emailDispatcher
     ) {
     }
 
@@ -173,6 +176,9 @@ class Sender
         );
         if ($previous !== $result->status && in_array($result->status, self::NOTIFY_STATUSES, true)) {
             $this->notifier->notify($row);
+        }
+        if (in_array($result->status, [Document::STATUS_ISSUED, Document::STATUS_ISSUED_WITH_WARNING], true)) {
+            $this->emailDispatcher->afterIssued($row);
         }
     }
 

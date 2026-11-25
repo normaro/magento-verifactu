@@ -6,6 +6,7 @@
 /** @var \Normaro\Verifactu\Block\Adminhtml\Document\Info $block */
 /** @var \Magento\Framework\Escaper $escaper */
 $document = $block->getDocument();
+$customerEmail = $block->getCustomerEmailLabel();
 $notSent = __('Not sent to Quaderno (module disabled, not paid yet, or created before the module was installed).');
 $link = static fn (string $url, $label): string => '<a href="' . $escaper->escapeUrl($url)
     . '" target="_blank" rel="noopener noreferrer">' . $escaper->escapeHtml($label) . '</a>';
@@ -17,6 +18,9 @@ $link = static fn (string $url, $label): string => '<a href="' . $escaper->escap
     <div class="admin__page-section-content">
         <?php if ($document === null): ?>
             <p><?= $escaper->escapeHtml($notSent) ?></p>
+            <?php if ($customerEmail !== ''): ?>
+                <p><?= $escaper->escapeHtml(__('Customer email')) ?>: <?= $escaper->escapeHtml($customerEmail) ?></p>
+            <?php endif; ?>
         <?php else: ?>
             <?php
             $aeat = (string)$document->getData('aeat_status');
@@ -34,6 +38,7 @@ $link = static fn (string $url, $label): string => '<a href="' . $escaper->escap
                 [__('PDF'), $document->getData('pdf_url')
                     ? $link((string)$document->getData('pdf_url'), __('Download PDF')) : ''],
                 [__('Message'), $escaper->escapeHtml((string)$document->getData('last_error'))],
+                [__('Customer email'), $escaper->escapeHtml($customerEmail)],
             ];
             ?>
             <table class="admin__table-secondary verifactu-document-table">

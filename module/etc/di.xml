@@ -44,4 +44,24 @@
             <argument name="logger" xsi:type="object">NormaroVerifactuMonolog</argument>
         </arguments>
     </type>
+    <!-- Customer emails: hold Magento's invoice / credit memo email until the Verifactu invoice is issued -->
+    <type name="Magento\Sales\Model\Order\Email\Sender\InvoiceSender">
+        <plugin name="normaro_verifactu_hold_email" type="Normaro\Verifactu\Plugin\HoldDocumentEmail"/>
+    </type>
+    <type name="Magento\Sales\Model\Order\Email\Sender\CreditmemoSender">
+        <plugin name="normaro_verifactu_hold_email" type="Normaro\Verifactu\Plugin\HoldDocumentEmail"/>
+    </type>
+    <type name="Magento\Sales\Model\Order\Invoice\Sender\EmailSender">
+        <plugin name="normaro_verifactu_hold_email" type="Normaro\Verifactu\Plugin\HoldApiDocumentEmail"/>
+    </type>
+    <type name="Magento\Sales\Model\Order\Creditmemo\Sender\EmailSender">
+        <plugin name="normaro_verifactu_hold_email" type="Normaro\Verifactu\Plugin\HoldApiDocumentEmail"/>
+    </type>
+    <!-- Verifactu number, PDF and AEAT link above the items of Magento's invoice / credit memo email -->
+    <type name="Magento\Sales\Block\Order\Email\Invoice\Items">
+        <plugin name="normaro_verifactu_email_line" type="Normaro\Verifactu\Plugin\EmailItemsVerifactuLine"/>
+    </type>
+    <type name="Magento\Sales\Block\Order\Email\Creditmemo\Items">
+        <plugin name="normaro_verifactu_email_line" type="Normaro\Verifactu\Plugin\EmailItemsVerifactuLine"/>
+    </type>
 </config>

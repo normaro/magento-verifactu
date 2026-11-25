@@ -17,6 +17,9 @@
                 <simplified_email>0</simplified_email>
                 <debug>0</debug>
             </general>
+            <customer_email>
+                <mode>as_is</mode>
+            </customer_email>
         </verifactu>
     </default>
 </config>
