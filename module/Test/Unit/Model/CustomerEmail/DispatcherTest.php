@@ -25,14 +25,19 @@ use PHPUnit\Framework\TestCase;
 class DispatcherTest extends TestCase
 {
     /**
-     * Issued row of invoice 10.
+     * Issued row of invoice 10 with the given AEAT state.
      *
+     * @param string $aeat
      * @return Document
      */
-    private function row(): Document
+    private function row(string $aeat = 'Correcto'): Document
     {
         $row = $this->createStub(Document::class);
-        $row->method('getData')->willReturnMap([['source_type', null, 'invoice'], ['source_id', null, 10]]);
+        $row->method('getData')->willReturnMap([
+            ['source_type', null, 'invoice'],
+            ['source_id', null, 10],
+            ['aeat_status', null, $aeat],
+        ]);
         return $row;
     }
 
@@ -44,6 +49,7 @@ class DispatcherTest extends TestCase
      * @param (CustomerEmail&\PHPUnit\Framework\MockObject\Stub)|null $state
      * @param AdminNotifier|null $notifier
      * @param (InvoiceSender&\PHPUnit\Framework\MockObject\Stub)|null $sender
+     * @param int $ageSeconds since Magento asked for the email
      * @return Dispatcher
      * @SuppressWarnings(PHPMD.BooleanArgumentFlag) test helper: the flag is the sender result under test
      */
@@ -52,12 +58,14 @@ class DispatcherTest extends TestCase
         bool $sent,
         ?CustomerEmail $state = null,
         ?AdminNotifier $notifier = null,
-        ?InvoiceSender $sender = null
+        ?InvoiceSender $sender = null,
+        int $ageSeconds = 30
     ): Dispatcher {
         if ($state === null) {
             $state = $this->createStub(CustomerEmail::class);
         }
         $state->method('getStatus')->willReturn($status);
+        $state->method('getAgeSeconds')->willReturn($ageSeconds);
         $invoices = $this->createStub(InvoiceRepositoryInterface::class);
         $invoices->method('get')->willReturn($this->createStub(Invoice::class));
         if ($sender === null) {
@@ -117,5 +125,23 @@ class DispatcherTest extends TestCase
         foreach ([null, CustomerEmail::STATUS_SENT, CustomerEmail::STATUS_QUADERNO] as $status) {
             $this->dispatcher($status, true, null, null, $sender)->afterIssued($this->row());
         }
+    }
+
+    /**
+     * AEAT result not in yet (no QR in the PDF): the email keeps waiting, then goes after the time limit.
+     *
+     * @return void
+     */
+    public function testWaitsForTheAeatResultUpToTheLimit(): void
+    {
+        $sender = $this->createMock(InvoiceSender::class);
+        $sender->expects($this->never())->method('send');
+        $this->dispatcher(CustomerEmail::STATUS_PENDING, true, null, null, $sender, 30)
+            ->afterIssued($this->row('pending'));
+
+        $late = $this->createMock(InvoiceSender::class);
+        $late->expects($this->once())->method('send')->willReturn(true);
+        $this->dispatcher(CustomerEmail::STATUS_PENDING, true, null, null, $late, Dispatcher::MAX_WAIT_SECONDS)
+            ->afterIssued($this->row('pending'));
     }
 }

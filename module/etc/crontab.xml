@@ -10,5 +10,9 @@
         <job name="verifactu_recheck" instance="Normaro\Verifactu\Cron\Recheck" method="execute">
             <schedule>*/10 * * * *</schedule>
         </job>
+        <!-- Customer emails waiting for the AEAT registration (only rows with a held email) -->
+        <job name="verifactu_customer_email" instance="Normaro\Verifactu\Cron\CustomerEmails" method="execute">
+            <schedule>* * * * *</schedule>
+        </job>
     </group>
 </config>

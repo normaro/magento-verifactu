@@ -8,8 +8,9 @@ versions follow [Semantic Versioning](https://semver.org/).
 ### Added
 
 - **Customer emails** (Verifactu › Customer emails): *After issue* holds Magento's invoice and
-  credit memo email until Quaderno has issued the Verifactu invoice, then sends it from the queue
-  consumer / cron with the Verifactu number, PDF and AEAT link (template variables
+  credit memo email until Quaderno has issued the Verifactu invoice and the AEAT has registered it
+  (Quaderno's PDF carries the QR code only after the AEAT delivery; at most 15 minutes, checked every
+  minute by the cron job `verifactu_customer_email`), then sends it with the Verifactu number, PDF and AEAT link (template variables
   `verifactu_number`, `verifactu_type`, `verifactu_pdf_url`, `verifactu_verification_url` and a
   line above the items). *Quaderno* sends no Magento emails for these documents (Autosend), except
   simplified invoices sent without the customer's email. *As is* (default after an upgrade) keeps

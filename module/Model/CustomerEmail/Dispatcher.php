@@ -25,6 +25,12 @@ use Normaro\Verifactu\Model\ResourceModel\CustomerEmail;
 class Dispatcher
 {
     /**
+     * Longest wait for the AEAT registration: Quaderno's PDF gets the Verifactu QR and legend only after the
+     * AEAT delivery (sandbox, 2026-11-25), so the email waits for it, but not longer than this.
+     */
+    public const MAX_WAIT_SECONDS = 900;
+
+    /**
      * @param CustomerEmail $customerEmail
      * @param Gate $gate
      * @param InvoiceRepositoryInterface $invoiceRepository
@@ -47,7 +53,7 @@ class Dispatcher
     }
 
     /**
-     * Send the email of an issued row if it is waiting.
+     * Send the email of an issued row if it is waiting and the AEAT result is in (or the wait is over).
      *
      * @param Document $row
      * @return void
@@ -58,6 +64,12 @@ class Dispatcher
         $sourceId = (int)$row->getData('source_id');
         if ($this->customerEmail->getStatus($type, $sourceId) !== CustomerEmail::STATUS_PENDING) {
             return;
+        }
+        $aeat = (string)$row->getData('aeat_status');
+        if (($aeat === '' || $aeat === 'pending')
+            && (int)$this->customerEmail->getAgeSeconds($type, $sourceId) < self::MAX_WAIT_SECONDS
+        ) {
+            return; // the PDF has no QR yet; Cron\CustomerEmails checks again every minute
         }
         try {
             $sent = (bool)$this->gate->through(fn () => $this->inArea(fn () => $this->send($type, $sourceId)));

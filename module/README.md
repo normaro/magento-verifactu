@@ -70,7 +70,8 @@ Recommended Magento setup:
   must not be the 0 % group (Quaderno does not check VAT numbers);
 - customer emails (**Verifactu › Customer emails**):
   - **After issue** (recommended): Magento's invoice / credit memo email waits until Quaderno has
-    issued the Verifactu invoice, then goes out with its number, PDF and AEAT link; keep Sales
+    issued the Verifactu invoice and the AEAT has registered it (Quaderno's PDF has the QR code only
+    then; at most 15 minutes), then goes out with its number, PDF and AEAT link; keep Sales
     Emails › Invoice / Credit Memo enabled. A blocked document keeps its email waiting until it is
     resent; "Send Email" on the Magento page always sends at once;
   - **Quaderno**: Magento sends no invoice / credit memo emails for these documents; switch on

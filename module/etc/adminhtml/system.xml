@@ -72,7 +72,7 @@
                        showInWebsite="1" showInStore="1">
                     <label>Magento invoice and credit memo emails</label>
                     <source_model>Normaro\Verifactu\Model\Config\Source\CustomerEmailMode</source_model>
-                    <comment>After issue (recommended): the email waits until Quaderno has issued the Verifactu invoice, then goes out with its number, PDF and AEAT link; Sales Emails &gt; Invoice / Credit Memo must stay enabled. Blocked documents keep the email waiting until they are resent. "Send Email" on the Magento page always sends at once.</comment>
+                    <comment>After issue (recommended): the email waits until Quaderno has issued the Verifactu invoice and the AEAT has registered it (its PDF has the QR code only then; at most 15 minutes), then goes out with its number, PDF and AEAT link; Sales Emails &gt; Invoice / Credit Memo must stay enabled. Blocked documents keep the email waiting until they are resent. "Send Email" on the Magento page always sends at once.</comment>
                 </field>
             </group>
             <group id="tax" translate="label" type="text" sortOrder="20" showInDefault="1"

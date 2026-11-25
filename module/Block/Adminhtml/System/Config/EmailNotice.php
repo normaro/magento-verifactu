@@ -47,8 +47,8 @@ class EmailNotice extends AbstractBlock implements RendererInterface
         if ($mode === Config::EMAIL_AFTER_ISSUE) {
             $text = (string)__(
                 'Customer emails: After issue. Magento\'s invoice and credit memo emails wait until Quaderno has'
-                . ' issued the Verifactu invoice, then go out with its number, PDF and AEAT link. Keep Sales Emails'
-                . ' > Invoice and Credit Memo enabled.'
+                . ' issued the Verifactu invoice and the AEAT has registered it (at most 15 minutes), then go out'
+                . ' with its number, PDF and AEAT link. Keep Sales Emails > Invoice and Credit Memo enabled.'
             );
             return '<div class="message message-notice verifactu-email-notice">'
                 . $this->escaper->escapeHtml($text) . '</div>';
