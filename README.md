@@ -21,8 +21,8 @@ system and is responsible for the invoice records and their delivery to the AEAT
 
 ## Requirements
 
-- Magento Open Source **2.4.7 or 2.4.8** (Adobe Commerce: not tested), with the PHP version that release
-  supports (CI runs PHP 8.1–8.3 on 2.4.7 and 8.4 on 2.4.8).
+- Magento Open Source **2.4.7, 2.4.8 or 2.4.9** (Adobe Commerce: not tested), with the PHP version that
+  release supports (CI runs PHP 8.1–8.3 on 2.4.7, 8.4 on 2.4.8, 8.4 and 8.5 on 2.4.9).
 - A **paid Quaderno account** with the Verifactu integration activated. Activation cannot be
   undone: try everything in a Quaderno sandbox account first.
 - The company's **electronic certificate** (PKCS#12) uploaded to Quaderno (Quaderno requires it

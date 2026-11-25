@@ -26,10 +26,14 @@ jobs:
       matrix:
         include:
           # 2.4.7 allows PHP 8.1, and the Marketplace installation test runs every allowed version
-          - { php: '8.1', magento: '2.4.7-p10' }
-          - { php: '8.2', magento: '2.4.7-p10' }
-          - { php: '8.3', magento: '2.4.7-p10' }
-          - { php: '8.4', magento: '2.4.8-p5' }
+          - { php: '8.1', magento: '2.4.7-p10', stan: 'phpstan/phpstan:^1.12 bitexpert/phpstan-magento:^0.32' }
+          - { php: '8.2', magento: '2.4.7-p10', stan: 'phpstan/phpstan:^1.12 bitexpert/phpstan-magento:^0.32' }
+          - { php: '8.3', magento: '2.4.7-p10', stan: 'phpstan/phpstan:^1.12 bitexpert/phpstan-magento:^0.32' }
+          - { php: '8.4', magento: '2.4.8-p5', stan: 'phpstan/phpstan:^1.12 bitexpert/phpstan-magento:^0.32' }
+          # the Marketplace automated tests run on the latest Magento release (2.4.9, PHP 8.5);
+          # 2.4.9 has symfony 7, which only phpstan-magento 0.44 (PHPStan 2) allows
+          - { php: '8.4', magento: '2.4.9', stan: 'phpstan/phpstan:^2.1 bitexpert/phpstan-magento:^0.44' }
+          - { php: '8.5', magento: '2.4.9', stan: 'phpstan/phpstan:^2.1 bitexpert/phpstan-magento:^0.44' }
     env:
       COMPOSER_MEMORY_LIMIT: '-1'
       COMPOSER_NO_INTERACTION: '1'
@@ -59,8 +63,7 @@ jobs:
           composer config repositories.verifactu \
             '{"type": "path", "url": "${{ github.workspace }}/module", "options": {"symlink": false}}'
           composer require --no-update normaro/module-verifactu:^0.1
-          composer require --dev --no-update phpmd/phpmd:2.15.0 pdepend/pdepend:^2.16 \
-            phpstan/phpstan:^1.12 bitexpert/phpstan-magento:^0.32
+          composer require --dev --no-update phpmd/phpmd:2.15.0 pdepend/pdepend:^2.16 ${{ matrix.stan }}
           composer update --no-progress --ignore-platform-req='ext-*'
           # the runner image ships /var/www/html (apache): replace it, do not link inside it
           sudo rm -rf /var/www/html

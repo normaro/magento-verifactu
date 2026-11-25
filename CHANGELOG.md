@@ -3,6 +3,20 @@
 All notable changes to this project. Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/);
 versions follow [Semantic Versioning](https://semver.org/).
 
+## [0.1.2] - 2026-11-25
+
+Magento 2.4.9 / PHP 8.5 support. No change in behaviour.
+
+### Changed
+
+- `composer.json`: every `magento/*` constraint open up to the next major version (for example
+  `magento/framework >=103.0.7 <104`), so the package installs on Magento 2.4.9; `php`
+  `>=8.1 <8.6`. Version 0.1.2.
+- Unit tests: data providers also declared with `#[DataProvider]` (PHPUnit 12 on 2.4.9 reads
+  attributes only); PHPStan config works with PHPStan 1 and 2.
+- CI: Magento 2.4.9 with PHP 8.4 and 8.5 added.
+- README: compatibility Magento Open Source 2.4.7–2.4.9.
+
 ## [0.1.1] - 2026-11-19
 
 Documentation only; no code changes.

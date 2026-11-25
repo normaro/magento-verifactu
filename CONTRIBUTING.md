@@ -15,10 +15,11 @@ Bug reports, questions and pull requests are welcome.
 ## Pull requests
 
 - One topic per pull request, with a test where the change has logic.
-- The code must pass the same gates as CI (below) on Magento 2.4.7 and 2.4.8.
+- The code must pass the same gates as CI (below) on Magento 2.4.7, 2.4.8 and 2.4.9.
 - No customer data, account hosts or keys in code, fixtures or commit messages. Fixtures from a
   Quaderno sandbox must have names, tax IDs, addresses and the account host replaced.
-- Support Magento 2.4.7 / 2.4.8 and PHP 8.1–8.4: no syntax newer than PHP 8.1.
+- Support Magento 2.4.7–2.4.9 and PHP 8.1–8.5: no syntax newer than PHP 8.1. Tests run on
+  PHPUnit 9 (2.4.7) to 12 (2.4.9): give data providers both `@dataProvider` and `#[DataProvider]`.
 - By submitting a pull request you agree to license your contribution under
   [OSL-3.0](LICENSE).
 
@@ -26,7 +27,7 @@ Bug reports, questions and pull requests are welcome.
 
 `tools/ci/module-gates.sh` runs the Marketplace code sniffer (severity 10), PHPCS (Magento2 +
 PHPCompatibility, warnings included), PHPStan level 6, PHPMD, PHPCPD, a TODO/FIXME check,
-`composer validate` and the unit tests. You need a Magento 2.4.7 or 2.4.8 project with its dev
+`composer validate` and the unit tests. You need a Magento 2.4.7, 2.4.8 or 2.4.9 project with its dev
 dependencies and the module installed in it:
 
 ```bash
