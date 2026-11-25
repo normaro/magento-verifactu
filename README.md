@@ -15,8 +15,9 @@ system and is responsible for the invoice records and their delivery to the AEAT
 
 ## Who it is for
 
-- **Shop owners** selling from Spain on Magento who must comply with Verifactu (from
-  1 January 2027 for corporate-tax payers, from 1 July 2027 for everyone else, RDL 15/2025).
+- **Shop owners** selling from Spain on Magento who must comply with Verifactu (plazo: antes del
+  6 de octubre de 2028, [RDL 43/2026](https://www.boe.es/buscar/doc.php?id=BOE-A-2026-24701),
+  pendiente de convalidación; the same date for every business).
 - **Developers and agencies** installing it for such shops.
 
 ## Requirements
